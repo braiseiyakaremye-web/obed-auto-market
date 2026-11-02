@@ -2,6 +2,19 @@ const defaultVehicles = [
   {id:'toyota-rav4-2020',make:'Toyota',model:'RAV4',trim:'SUV',year:2020,price:3600000,transmission:'Automatic',fuel:'Petrol',mileage:'60,120 km',category:'SUV',featured:true,status:'Available',location:'Kigali',image:'photo-1519641471654-76ce0107ad1b'},
   {id:'hyundai-tucson-2011',make:'Hyundai',model:'Tucson',trim:'SUV',year:2011,price:10500000,transmission:'Automatic',fuel:'Petrol',mileage:'180,000 km',category:'SUV',featured:false,status:'Available',location:'Kigali',image:'photo-1606664515524-ed2f786a0bd6'},
   {id:'toyota-prado-txl-2017',make:'Toyota',model:'Land Cruiser Prado',trim:'TXL',year:2017,price:50000000,transmission:'Automatic',fuel:'Diesel',mileage:'130,000 km',category:'SUV',featured:true,status:'Available',location:'Kigali',image:'photo-1519641471654-76ce0107ad1b'},
+  {id:'toyota-land-cruiser-v8-2016',make:'Toyota',model:'Land Cruiser V8',trim:'4WD SUV',year:2016,price:0,transmission:'Automatic',fuel:'Diesel',mileage:'Contact for details',category:'SUV / Cross-country',featured:false,status:'Available',location:'Kigali',image:'photo-1519641471654-76ce0107ad1b'},
+  {id:'toyota-harrier-2018',make:'Toyota',model:'Harrier',trim:'Cross-country SUV',year:2018,price:0,transmission:'Automatic',fuel:'Petrol',mileage:'Contact for details',category:'Crossover / Cross-country',featured:false,status:'Available',location:'Kigali',image:'photo-1606664515524-ed2f786a0bd6'},
+  {id:'toyota-noah-2019',make:'Toyota',model:'Noah',trim:'Family van',year:2019,price:0,transmission:'Automatic',fuel:'Petrol',mileage:'Contact for details',category:'Van / MPV',featured:false,status:'Available',location:'Kigali',image:'photo-1519641471654-76ce0107ad1b'},
+  {id:'toyota-corolla-2015',make:'Toyota',model:'Corolla',trim:'Sedan',year:2015,price:0,transmission:'Automatic',fuel:'Petrol',mileage:'Contact for details',category:'Sedan',featured:false,status:'Available',location:'Kigali',image:'photo-1623869675781-80aa31012a5a'},
+  {id:'toyota-premio-2014',make:'Toyota',model:'Premio',trim:'Comfort sedan',year:2014,price:0,transmission:'Automatic',fuel:'Petrol',mileage:'Contact for details',category:'Sedan',featured:false,status:'Available',location:'Kigali',image:'photo-1623869675781-80aa31012a5a'},
+  {id:'toyota-axio-2016',make:'Toyota',model:'Corolla Axio',trim:'Compact sedan',year:2016,price:0,transmission:'Automatic',fuel:'Petrol',mileage:'Contact for details',category:'Compact sedan',featured:false,status:'Available',location:'Kigali',image:'photo-1623869675781-80aa31012a5a'},
+  {id:'toyota-hiace-2017',make:'Toyota',model:'HiAce',trim:'Passenger van',year:2017,price:0,transmission:'Manual',fuel:'Diesel',mileage:'Contact for details',category:'Van / Minibus',featured:false,status:'Available',location:'Kigali',image:'photo-1519641471654-76ce0107ad1b'},
+  {id:'toyota-corolla-cross-2022',make:'Toyota',model:'Corolla Cross',trim:'Hybrid crossover',year:2022,price:0,transmission:'Automatic',fuel:'Hybrid',mileage:'Contact for details',category:'Hybrid / Crossover',featured:false,status:'Available',location:'Kigali',image:'photo-1606664515524-ed2f786a0bd6'},
+  {id:'subaru-forester-2017',make:'Subaru',model:'Forester',trim:'AWD SUV',year:2017,price:0,transmission:'Automatic',fuel:'Petrol',mileage:'Contact for details',category:'SUV / Cross-country',featured:false,status:'Available',location:'Kigali',image:'photo-1606664515524-ed2f786a0bd6'},
+  {id:'nissan-x-trail-2018',make:'Nissan',model:'X-Trail',trim:'4WD SUV',year:2018,price:0,transmission:'Automatic',fuel:'Petrol',mileage:'Contact for details',category:'SUV / Cross-country',featured:false,status:'Available',location:'Kigali',photo:'https://commons.wikimedia.org/wiki/Special:FilePath/2017-2020_Nissan_X-Trail_20X.jpg?width=960',photoCredit:'Photo: TTTNIS · CC0',photoCreditUrl:'https://commons.wikimedia.org/wiki/File:2017-2020_Nissan_X-Trail_20X.jpg'},
+  {id:'honda-cr-v-2018',make:'Honda',model:'CR-V',trim:'SUV',year:2018,price:0,transmission:'Automatic',fuel:'Petrol',mileage:'Contact for details',category:'SUV',featured:false,status:'Available',location:'Kigali',photo:'https://commons.wikimedia.org/wiki/Special:FilePath/Honda_CR-V_Genf_2018.jpg?width=960',photoCredit:'Photo: Alexander Migl · CC BY-SA 4.0',photoCreditUrl:'https://commons.wikimedia.org/wiki/File:Honda_CR-V_Genf_2018.jpg'},
+  {id:'mitsubishi-pajero-2016',make:'Mitsubishi',model:'Pajero',trim:'4WD SUV',year:2016,price:0,transmission:'Automatic',fuel:'Diesel',mileage:'Contact for details',category:'SUV / Cross-country',featured:false,status:'Available',location:'Kigali',image:'photo-1519641471654-76ce0107ad1b'},
+  {id:'suzuki-swift-2018',make:'Suzuki',model:'Swift',trim:'Hatchback',year:2018,price:0,transmission:'Automatic',fuel:'Petrol',mileage:'Contact for details',category:'Hatchback',featured:false,status:'Available',location:'Kigali',image:'photo-1549317661-bd32c8ce0db2'},
   {id:'toyota-hilux-vigo-2013',make:'Toyota',model:'Hilux Vigo',trim:'Double Cab',year:2013,price:26500000,transmission:'Manual',fuel:'Diesel',mileage:'220,000 km',category:'Pickup',featured:true,status:'Available',location:'Kigali',image:'photo-1621007947382-bb3c3994e3fb'},
   {id:'toyota-yaris-2007',make:'Toyota',model:'Yaris',trim:'Hatchback',year:2007,price:5000000,transmission:'Automatic',fuel:'Petrol',mileage:'220,000 km',category:'Hatchback',featured:false,status:'Available',location:'Kigali',image:'photo-1549317661-bd32c8ce0db2'},
   {id:'toyota-vios-2007',make:'Toyota',model:'Vios',trim:'Sedan',year:2007,price:8700000,transmission:'Automatic',fuel:'Petrol',mileage:'160,000 km',category:'Saloon',featured:false,status:'Available',location:'Kigali',image:'photo-1623869675781-80aa31012a5a'},
@@ -13,13 +26,32 @@ const defaultVehicles = [
   {id:'honda-ens1-2024',make:'Honda',model:'e:NS1',trim:'Electric SUV',year:2024,price:0,transmission:'Automatic',fuel:'Electric',mileage:'Contact for details',category:'Electric',featured:false,status:'Available',location:'Kigali',photo:'assets/honda-ens1.jpg'},
   {id:'byd-song-plus-ev-2025',make:'BYD',model:'Song Plus EV',trim:'Electric SUV',year:2025,price:0,transmission:'Automatic',fuel:'Electric',mileage:'Contact for details',category:'Electric',featured:false,status:'Available',location:'Kigali',photo:'assets/byd-song-plus-ev.png'}
 ];
+const samplePhotoSources = {
+  'toyota-land-cruiser-v8-2016': ['2016 Toyota Land Cruiser 200 4.5 VX V8, 06-01-2024.jpg', 'Ethan Llamas · CC BY-SA 4.0'],
+  'toyota-harrier-2018': ['18 Toyota Harrier (XU60) front.jpg', 'Benespit · CC BY-SA 4.0'],
+  'toyota-noah-2019': ['Toyota Noah TRD 2019.jpg', 'Jared Cabot · CC BY-SA 4.0'],
+  'toyota-corolla-2015': ['2015 Toyota Corolla LE front 5.6.18.jpg', 'Kevauto · CC BY-SA 4.0'],
+  'toyota-premio-2014': ['TOYOTA PREMIO T260 201606 01.jpeg', 'Wikimedia Commons contributor · CC BY-SA 4.0'],
+  'toyota-axio-2016': ['2016 Toyota Corolla Axio.jpg', 'User3204 · CC BY-SA 4.0'],
+  'toyota-hiace-2017': ['Toyota HiAce van (32611704085).jpg', 'dave_7 · CC BY 2.0'],
+  'toyota-corolla-cross-2022': ['Toyota Corolla Cross 1.8 G 2021.jpg', 'Ethan Llamas · CC BY-SA 4.0'],
+  'subaru-forester-2017': ["'17 Subaru Forester (MIAS '17).jpg", 'Bull-Doser · Public domain'],
+  'mitsubishi-pajero-2016': ['Mitsubishi pajero v75w longexceed 1 f.jpg', 'Toyotacoronaexsaloon · CC BY-SA 4.0'],
+  'suzuki-swift-2018': ['Suzuki Swift 2018.jpg', 'Davidi Vardi · CC BY-SA 4.0']
+};
+Object.entries(samplePhotoSources).forEach(([id, [file, credit]]) => {
+  const car = defaultVehicles.find(vehicle => vehicle.id === id);
+  car.photo = `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(file)}?width=960`;
+  car.photoCredit = `Photo: ${credit}`;
+  car.photoCreditUrl = `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(file.replaceAll(' ', '_'))}`;
+});
 const inventoryStorageKey = 'obedAutoInventory';
 let vehicles;
 try {
   const savedInventory = JSON.parse(localStorage.getItem(inventoryStorageKey));
   vehicles = Array.isArray(savedInventory) && savedInventory.length ? savedInventory : defaultVehicles;
   if (Array.isArray(savedInventory)) {
-    const newSampleVehicles = defaultVehicles.filter(car => !vehicles.some(savedCar => savedCar.id === car.id) && ['byd-atto-3-2024','byd-dolphin-2024','honda-ens1-2024','byd-song-plus-ev-2025'].includes(car.id));
+    const newSampleVehicles = defaultVehicles.filter(car => !vehicles.some(savedCar => savedCar.id === car.id) && ['byd-atto-3-2024','byd-dolphin-2024','honda-ens1-2024','byd-song-plus-ev-2025','toyota-land-cruiser-v8-2016','toyota-harrier-2018','toyota-noah-2019','toyota-corolla-2015','toyota-premio-2014','toyota-axio-2016','toyota-hiace-2017','toyota-corolla-cross-2022','subaru-forester-2017','nissan-x-trail-2018','honda-cr-v-2018','mitsubishi-pajero-2016','suzuki-swift-2018'].includes(car.id));
     vehicles.push(...newSampleVehicles);
     if (newSampleVehicles.length) localStorage.setItem(inventoryStorageKey, JSON.stringify(vehicles));
   }
@@ -27,6 +59,19 @@ try {
   vehicles = defaultVehicles;
 }
 function saveInventory() { localStorage.setItem(inventoryStorageKey, JSON.stringify(vehicles)); }
+
+const exactPhotoDefaults = new Map(defaultVehicles.filter(car => car.photo).map(car => [car.id, car]));
+let updatedSamplePhotos = false;
+vehicles.forEach(car => {
+  const sample = exactPhotoDefaults.get(car.id);
+  if (sample && !car.photo) {
+    car.photo = sample.photo;
+    car.photoCredit = sample.photoCredit;
+    car.photoCreditUrl = sample.photoCreditUrl;
+    updatedSamplePhotos = true;
+  }
+});
+if (updatedSamplePhotos) saveInventory();
 
 const grid = document.getElementById('car-grid');
 const searchInput = document.getElementById('car-search');
@@ -48,20 +93,24 @@ vehicles.map(car => car.make).filter((make, index, makes) => makes.indexOf(make)
 });
 
 function renderCars() {
-  const query = searchInput.value.trim().toLowerCase();
+  const availableVehicles = vehicles.filter(car => car.status !== 'Sold');
+  document.getElementById('available-car-total').textContent = availableVehicles.length;
+  document.getElementById('electric-car-total').textContent = availableVehicles.filter(car => car.fuel === 'Electric').length;
+  const queryTerms = searchInput.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
   const maxPrice = Number(priceFilter.value) || Infinity;
   const onlySaved = savedFilter.getAttribute('aria-pressed') === 'true';
   const matches = vehicles.filter(car => {
-    const searchable = `${car.make} ${car.model} ${car.trim} ${car.year} ${car.category} ${car.fuel} ${car.transmission}`.toLowerCase();
+    const searchable = `${car.make} ${car.model} ${car.trim} ${car.year} ${car.category} ${car.fuel} ${car.transmission} ${car.mileage} ${car.location} ${car.price}`.toLowerCase();
     const withinPrice = maxPrice === Infinity ? true : Number(car.price) > 0 && car.price <= maxPrice;
     const matchesDrive = !transmissionFilter.value || (transmissionFilter.value === 'Electric' ? car.fuel === 'Electric' : car.transmission === transmissionFilter.value);
-    return car.status !== 'Sold' && (!query || searchable.includes(query)) && (!makeFilter.value || car.make === makeFilter.value) && matchesDrive && withinPrice && (!onlySaved || liked.has(car.id));
+    return car.status !== 'Sold' && queryTerms.every(term => searchable.includes(term)) && (!makeFilter.value || car.make === makeFilter.value) && matchesDrive && withinPrice && (!onlySaved || liked.has(car.id));
   });
 
   grid.innerHTML = matches.map(car => `
     <article class="car-card">
       <div class="car-image-wrap">
         <img class="car-image" src="${car.photo || `https://images.unsplash.com/${car.image}?auto=format&fit=crop&w=800&q=78`}" alt="${car.year} ${car.make} ${car.model} ${car.trim}" loading="lazy">
+        ${car.photoCredit ? `<a class="photo-credit" href="${car.photoCreditUrl}" target="_blank" rel="noopener noreferrer">${car.photoCredit}</a>` : ''}
         <span class="car-badge ${car.featured ? 'featured' : ''}">${car.featured ? '✳ &nbsp; OUR PICK' : car.category.toUpperCase()}</span>
         <button class="wishlist-button ${liked.has(car.id) ? 'is-saved' : ''}" data-save="${car.id}" aria-label="${liked.has(car.id) ? 'Remove ' + car.model + ' from saved cars' : 'Save ' + car.model}" aria-pressed="${liked.has(car.id)}">${liked.has(car.id) ? '♥' : '♡'}</button>
       </div>
@@ -201,6 +250,14 @@ document.getElementById('open-admin').addEventListener('click', async () => {
   const session = await checkAdminSession();
   if (session.authenticated) showAdminDashboard();
   else showAdminLogin(session.message || 'Enter your admin phone number and password.');
+});
+document.getElementById('toggle-admin-password').addEventListener('click', event => {
+  const password = document.getElementById('admin-password');
+  const showPassword = password.type === 'password';
+  password.type = showPassword ? 'text' : 'password';
+  event.currentTarget.textContent = showPassword ? 'Hide' : 'Show';
+  event.currentTarget.setAttribute('aria-label', `${showPassword ? 'Hide' : 'Show'} password`);
+  event.currentTarget.setAttribute('aria-pressed', String(showPassword));
 });
 adminLogin.addEventListener('submit', async event => {
   event.preventDefault();

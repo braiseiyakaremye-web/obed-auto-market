@@ -81,3 +81,8 @@
 @media(max-width:430px){.car-grid{grid-template-columns:minmax(0,1fr);gap:12px;padding:10px}.car-image-wrap{height:clamp(160px,52vw,210px)}}
 .email-button{width:auto;max-width:100%;margin-left:10px;gap:12px}
 @media(max-width:650px){.email-button{margin:12px 0 0;max-width:100%;font-size:9px}}
+.password-input-wrap{position:relative;display:block}
+.admin-login .password-input-wrap input{padding-right:66px}
+.password-toggle{position:absolute;top:50%;right:8px;transform:translateY(-50%);border:0;background:transparent;color:var(--blue);font-size:11px;font-weight:700;padding:7px;cursor:pointer}
+.password-toggle:focus-visible{outline:2px solid var(--blue);outline-offset:1px;border-radius:3px}
+.photo-credit{position:absolute;left:8px;bottom:8px;z-index:1;padding:4px 6px;border-radius:2px;background:#071a30c9;color:#fff;font-size:8px;line-height:1.3}.photo-credit:hover{text-decoration:underline}
