@@ -8,16 +8,20 @@ const defaultVehicles = [
   {id:'neta-u-2021',make:'NETA',model:'U',trim:'Electric SUV',year:2021,price:18500000,transmission:'Automatic',fuel:'Electric',mileage:'60,000 km',category:'Electric',featured:false,status:'Available',location:'Kigali',image:'photo-1593941707882-a5bba14938c7'},
   {id:'toyota-highlander-2022',make:'Toyota',model:'Highlander',trim:'SUV',year:2022,price:40000000,transmission:'Automatic',fuel:'Petrol',mileage:'40,000 km',category:'SUV',featured:false,status:'Available',location:'Kigali',image:'photo-1519641471654-76ce0107ad1b'},
   {id:'toyota-bz4x-2023',make:'Toyota',model:'bZ4X',trim:'Electric SUV',year:2023,price:35000000,transmission:'Automatic',fuel:'Electric',mileage:'70,159 km',category:'Electric',featured:false,status:'Available',location:'Kigali',image:'photo-1593941707882-a5bba14938c7'},
-  {id:'byd-atto-3-2024',make:'BYD',model:'Atto 3',trim:'Electric SUV · Rwanda model',year:2024,price:0,transmission:'Automatic',fuel:'Electric',mileage:'Contact for details',category:'Electric',featured:true,status:'Available',location:'Kigali',image:'photo-1593941707882-a5bba14938c7'}
+  {id:'byd-atto-3-2024',make:'BYD',model:'Atto 3',trim:'Electric SUV · Rwanda model',year:2024,price:0,transmission:'Automatic',fuel:'Electric',mileage:'Contact for details',category:'Electric',featured:true,status:'Available',location:'Kigali',photo:'assets/byd-atto-3.jpg'},
+  {id:'byd-dolphin-2024',make:'BYD',model:'Dolphin',trim:'Electric hatchback',year:2024,price:0,transmission:'Automatic',fuel:'Electric',mileage:'Contact for details',category:'Electric',featured:false,status:'Available',location:'Kigali',photo:'assets/byd-dolphin.jpg'},
+  {id:'honda-ens1-2024',make:'Honda',model:'e:NS1',trim:'Electric SUV',year:2024,price:0,transmission:'Automatic',fuel:'Electric',mileage:'Contact for details',category:'Electric',featured:false,status:'Available',location:'Kigali',photo:'assets/honda-ens1.jpg'},
+  {id:'byd-song-plus-ev-2025',make:'BYD',model:'Song Plus EV',trim:'Electric SUV',year:2025,price:0,transmission:'Automatic',fuel:'Electric',mileage:'Contact for details',category:'Electric',featured:false,status:'Available',location:'Kigali',photo:'assets/byd-song-plus-ev.png'}
 ];
 const inventoryStorageKey = 'obedAutoInventory';
 let vehicles;
 try {
   const savedInventory = JSON.parse(localStorage.getItem(inventoryStorageKey));
   vehicles = Array.isArray(savedInventory) && savedInventory.length ? savedInventory : defaultVehicles;
-  if (Array.isArray(savedInventory) && !vehicles.some(car => car.id === 'byd-atto-3-2024')) {
-    vehicles.push(defaultVehicles.find(car => car.id === 'byd-atto-3-2024'));
-    localStorage.setItem(inventoryStorageKey, JSON.stringify(vehicles));
+  if (Array.isArray(savedInventory)) {
+    const newSampleVehicles = defaultVehicles.filter(car => !vehicles.some(savedCar => savedCar.id === car.id) && ['byd-atto-3-2024','byd-dolphin-2024','honda-ens1-2024','byd-song-plus-ev-2025'].includes(car.id));
+    vehicles.push(...newSampleVehicles);
+    if (newSampleVehicles.length) localStorage.setItem(inventoryStorageKey, JSON.stringify(vehicles));
   }
 } catch {
   vehicles = defaultVehicles;
