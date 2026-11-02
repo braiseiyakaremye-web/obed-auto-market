@@ -242,6 +242,10 @@ async function checkAdminSession() {
 }
 
 document.getElementById('open-admin').addEventListener('click', async () => {
+  if (!location.hostname.endsWith('.netlify.app')) {
+    location.assign('https://obed-auto-market.netlify.app/?admin=1');
+    return;
+  }
   adminOverlay.hidden = false;
   document.body.classList.add('admin-open');
   showAdminLogin('Checking your sign-in…');
@@ -264,7 +268,7 @@ document.getElementById('toggle-admin-password').addEventListener('click', event
 adminLogin.addEventListener('submit', async event => {
   event.preventDefault();
   if (!location.hostname.endsWith('.netlify.app')) {
-    adminLoginFeedback.textContent = 'Admin sign in works on the Netlify site: obed-auto-market.netlify.app';
+    location.assign('https://obed-auto-market.netlify.app/?admin=1');
     return;
   }
   const submit = adminLogin.querySelector('button[type="submit"]');
@@ -343,3 +347,7 @@ adminRows.addEventListener('click', event => {
     saveInventory(); renderAdmin(); renderCars();
   }
 });
+
+if (location.hostname.endsWith('.netlify.app') && new URLSearchParams(location.search).get('admin') === '1') {
+  document.getElementById('open-admin').click();
+}
