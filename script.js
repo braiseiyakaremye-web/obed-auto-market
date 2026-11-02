@@ -7,13 +7,18 @@ const defaultVehicles = [
   {id:'toyota-vios-2007',make:'Toyota',model:'Vios',trim:'Sedan',year:2007,price:8700000,transmission:'Automatic',fuel:'Petrol',mileage:'160,000 km',category:'Saloon',featured:false,status:'Available',location:'Kigali',image:'photo-1623869675781-80aa31012a5a'},
   {id:'neta-u-2021',make:'NETA',model:'U',trim:'Electric SUV',year:2021,price:18500000,transmission:'Automatic',fuel:'Electric',mileage:'60,000 km',category:'Electric',featured:false,status:'Available',location:'Kigali',image:'photo-1593941707882-a5bba14938c7'},
   {id:'toyota-highlander-2022',make:'Toyota',model:'Highlander',trim:'SUV',year:2022,price:40000000,transmission:'Automatic',fuel:'Petrol',mileage:'40,000 km',category:'SUV',featured:false,status:'Available',location:'Kigali',image:'photo-1519641471654-76ce0107ad1b'},
-  {id:'toyota-bz4x-2023',make:'Toyota',model:'bZ4X',trim:'Electric SUV',year:2023,price:35000000,transmission:'Automatic',fuel:'Electric',mileage:'70,159 km',category:'Electric',featured:false,status:'Available',location:'Kigali',image:'photo-1593941707882-a5bba14938c7'}
+  {id:'toyota-bz4x-2023',make:'Toyota',model:'bZ4X',trim:'Electric SUV',year:2023,price:35000000,transmission:'Automatic',fuel:'Electric',mileage:'70,159 km',category:'Electric',featured:false,status:'Available',location:'Kigali',image:'photo-1593941707882-a5bba14938c7'},
+  {id:'byd-atto-3-2024',make:'BYD',model:'Atto 3',trim:'Electric SUV · Rwanda model',year:2024,price:0,transmission:'Automatic',fuel:'Electric',mileage:'Contact for details',category:'Electric',featured:true,status:'Available',location:'Kigali',image:'photo-1593941707882-a5bba14938c7'}
 ];
 const inventoryStorageKey = 'obedAutoInventory';
 let vehicles;
 try {
   const savedInventory = JSON.parse(localStorage.getItem(inventoryStorageKey));
   vehicles = Array.isArray(savedInventory) && savedInventory.length ? savedInventory : defaultVehicles;
+  if (Array.isArray(savedInventory) && !vehicles.some(car => car.id === 'byd-atto-3-2024')) {
+    vehicles.push(defaultVehicles.find(car => car.id === 'byd-atto-3-2024'));
+    localStorage.setItem(inventoryStorageKey, JSON.stringify(vehicles));
+  }
 } catch {
   vehicles = defaultVehicles;
 }
@@ -44,7 +49,8 @@ function renderCars() {
   const onlySaved = savedFilter.getAttribute('aria-pressed') === 'true';
   const matches = vehicles.filter(car => {
     const searchable = `${car.make} ${car.model} ${car.trim} ${car.year} ${car.category} ${car.fuel} ${car.transmission}`.toLowerCase();
-    return car.status !== 'Sold' && (!query || searchable.includes(query)) && (!makeFilter.value || car.make === makeFilter.value) && (!transmissionFilter.value || car.transmission === transmissionFilter.value) && car.price <= maxPrice && (!onlySaved || liked.has(car.id));
+    const withinPrice = maxPrice === Infinity ? true : Number(car.price) > 0 && car.price <= maxPrice;
+    return car.status !== 'Sold' && (!query || searchable.includes(query)) && (!makeFilter.value || car.make === makeFilter.value) && (!transmissionFilter.value || car.transmission === transmissionFilter.value) && withinPrice && (!onlySaved || liked.has(car.id));
   });
 
   grid.innerHTML = matches.map(car => `
@@ -57,7 +63,7 @@ function renderCars() {
       <div class="car-info">
         <div class="car-make">${car.make.toUpperCase()} &nbsp;·&nbsp; ${car.trim.toUpperCase()}</div>
         <div class="car-title-row"><h3>${car.model}</h3><span class="car-year">${car.year}</span></div>
-        <div class="car-price">RWF ${formatter.format(car.price)}</div>
+        <div class="car-price">${Number(car.price) > 0 ? `RWF ${formatter.format(car.price)}` : 'Contact for price'}</div>
         <div class="car-details"><span class="car-detail">${car.transmission}</span><span class="car-detail">${car.fuel}</span><span class="car-detail">${car.mileage}</span><span class="car-detail">${car.location || 'Kigali'}</span></div>
         <button class="car-action" data-inquire="${car.id}" aria-label="Ask us about the ${car.year} ${car.make} ${car.model}">Ask about this car <span>↗</span></button>
       </div>
@@ -90,7 +96,8 @@ grid.addEventListener('click', event => {
   const inquiryButton = event.target.closest('[data-inquire]');
   if (inquiryButton) {
     const car = vehicles.find(vehicle => vehicle.id === inquiryButton.dataset.inquire);
-    const message = encodeURIComponent(`Hi Obed Auto Market! I'm interested in the ${car.year} ${car.make} ${car.model} ${car.trim} listed for RWF ${formatter.format(car.price)}. Is it available?`);
+    const priceText = Number(car.price) > 0 ? `listed for RWF ${formatter.format(car.price)}` : 'and would like to know the price';
+    const message = encodeURIComponent(`Hi Obed Auto Market! I'm interested in the ${car.year} ${car.make} ${car.model} ${car.trim} ${priceText}. Is it available?`);
     window.open(`https://wa.me/250784326686?text=${message}`, '_blank', 'noopener,noreferrer');
   }
 });
@@ -104,6 +111,11 @@ savedFilter.addEventListener('click', () => {
 });
 document.getElementById('reset-filters').addEventListener('click', resetFilters);
 document.getElementById('empty-reset').addEventListener('click', resetFilters);
+document.getElementById('browse-ev').addEventListener('click', () => {
+  resetFilters();
+  searchInput.value = 'electric';
+  renderCars();
+});
 document.getElementById('year').textContent = new Date().getFullYear();
 
 const menuButton = document.querySelector('.mobile-menu');
@@ -136,7 +148,7 @@ function renderAdmin() {
   document.getElementById('admin-available-count').textContent = available.length;
   document.getElementById('admin-sold-count').textContent = vehicles.length - available.length;
   document.getElementById('admin-value').textContent = `RWF ${formatter.format(available.reduce((total, car) => total + Number(car.price || 0), 0))}`;
-  adminRows.innerHTML = vehicles.map(car => `<tr><td><strong>${car.year} ${car.make} ${car.model}</strong><small>${car.trim || ''} · ${car.location || 'Kigali'}</small></td><td>RWF ${formatter.format(car.price)}</td><td>${car.transmission}</td><td><span class="status-pill ${car.status === 'Sold' ? 'status-sold' : ''}">${car.status || 'Available'}</span></td><td><div class="row-actions"><button type="button" data-edit="${car.id}">Edit</button><button type="button" data-toggle="${car.id}">${car.status === 'Sold' ? 'Relist' : 'Mark sold'}</button><button type="button" class="delete-action" data-delete="${car.id}">Delete</button></div></td></tr>`).join('');
+  adminRows.innerHTML = vehicles.map(car => `<tr><td><strong>${car.year} ${car.make} ${car.model}</strong><small>${car.trim || ''} · ${car.location || 'Kigali'}</small></td><td>${Number(car.price) > 0 ? `RWF ${formatter.format(car.price)}` : 'Ask for price'}</td><td>${car.transmission}</td><td><span class="status-pill ${car.status === 'Sold' ? 'status-sold' : ''}">${car.status || 'Available'}</span></td><td><div class="row-actions"><button type="button" data-edit="${car.id}">Edit</button><button type="button" data-toggle="${car.id}">${car.status === 'Sold' ? 'Relist' : 'Mark sold'}</button><button type="button" class="delete-action" data-delete="${car.id}">Delete</button></div></td></tr>`).join('');
 }
 
 function closeAdmin() {

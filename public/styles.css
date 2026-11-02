@@ -56,3 +56,11 @@
 .admin-login-feedback{min-height:18px;margin:12px 0 0;color:#b33a34;font-size:11px;line-height:1.5}
 .admin-submit:disabled{opacity:.6;cursor:wait}
 @media(max-width:650px){.admin-header-actions{gap:6px}.admin-login{padding:4px 0}.admin-login h2{font-size:25px}}
+/* Updated Obed Auto Market identity and Rwanda EV artwork */
+.brand{width:160px;height:60px}
+.brand img,.footer-brand img{width:100%;height:100%;object-fit:contain}
+.footer-brand{width:132px;height:55px}
+.ev-banner{position:relative;min-height:clamp(220px,32vw,420px);display:flex;align-items:flex-end;justify-content:flex-end;padding:26px 6.4%;background-image:linear-gradient(0deg,rgba(5,20,39,.5),transparent 42%),url('assets/rwanda-ev-market-background.jpg');background-size:cover;background-position:center 48%;}
+.ev-banner-link{display:inline-flex;align-items:center;gap:22px;padding:13px 17px;border:1px solid rgba(255,255,255,.75);border-radius:4px;background:rgba(7,26,48,.86);color:white;font-size:11px;font-weight:700;}
+.ev-banner-link span{color:#8bb2ff;font-size:16px}
+@media(max-width:650px){.brand{width:150px;height:56px}.footer-brand{width:105px;height:45px}.ev-banner{min-height:190px;padding:16px 5%;background-position:center 45%}.ev-banner-link{padding:11px 13px;font-size:10px}}
