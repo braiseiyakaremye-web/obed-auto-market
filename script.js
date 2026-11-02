@@ -123,6 +123,9 @@ navigation.addEventListener('click', event => {
 renderCars();
 
 const adminOverlay = document.getElementById('admin-overlay');
+const adminLogin = document.getElementById('admin-login');
+const adminLoginFeedback = document.getElementById('admin-login-feedback');
+const adminDashboard = document.getElementById('admin-dashboard');
 const adminRows = document.getElementById('admin-rows');
 const vehicleForm = document.getElementById('vehicle-form');
 const adminFeedback = document.getElementById('admin-feedback');
@@ -145,12 +148,71 @@ function closeAdmin() {
   document.getElementById('cancel-edit').hidden = true;
 }
 
-document.getElementById('open-admin').addEventListener('click', () => {
+function showAdminLogin(message = '') {
+  adminLogin.hidden = false;
+  adminDashboard.hidden = true;
+  adminOverlay.querySelector('.admin-panel').setAttribute('aria-labelledby', 'admin-login-title');
+  adminLoginFeedback.textContent = message;
+}
+
+function showAdminDashboard() {
+  adminLogin.hidden = true;
+  adminDashboard.hidden = false;
+  adminOverlay.querySelector('.admin-panel').setAttribute('aria-labelledby', 'admin-title');
+  renderAdmin();
+}
+
+async function checkAdminSession() {
+  if (!location.hostname.endsWith('.netlify.app')) {
+    return {ok: false, message: 'Admin sign in is available on the Netlify website.'};
+  }
+  try {
+    const response = await fetch('/.netlify/functions/admin-auth', {credentials:'same-origin'});
+    if (!response.ok) return {ok:false, message:'Admin login service is not available. Please try again later.'};
+    return await response.json();
+  } catch {
+    return {ok:false, message:'Could not reach the admin login service. Check your connection and try again.'};
+  }
+}
+
+document.getElementById('open-admin').addEventListener('click', async () => {
   adminOverlay.hidden = false;
   document.body.classList.add('admin-open');
-  renderAdmin();
+  showAdminLogin('Checking your sign-in…');
   document.querySelector('.main-nav').classList.remove('open');
   document.querySelector('.mobile-menu').setAttribute('aria-expanded', 'false');
+  const session = await checkAdminSession();
+  if (session.authenticated) showAdminDashboard();
+  else showAdminLogin(session.message || 'Enter your admin phone number and password.');
+});
+adminLogin.addEventListener('submit', async event => {
+  event.preventDefault();
+  const submit = adminLogin.querySelector('button[type="submit"]');
+  const form = new FormData(adminLogin);
+  submit.disabled = true;
+  adminLoginFeedback.textContent = 'Signing in…';
+  try {
+    const response = await fetch('/.netlify/functions/admin-auth', {
+      method:'POST', credentials:'same-origin', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({phone:String(form.get('phone')).replace(/\s+/g,''),password:String(form.get('password'))})
+    });
+    const result = await response.json();
+    if (!response.ok || !result.authenticated) {
+      adminLoginFeedback.textContent = result.message || 'Phone number or password is incorrect.';
+      return;
+    }
+    adminLogin.reset();
+    showAdminDashboard();
+  } catch {
+    adminLoginFeedback.textContent = 'Could not reach the admin login service. Check your connection and try again.';
+  } finally {
+    submit.disabled = false;
+  }
+});
+document.getElementById('cancel-admin-login').addEventListener('click', closeAdmin);
+document.getElementById('logout-admin').addEventListener('click', async () => {
+  try { await fetch('/.netlify/functions/admin-auth', {method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'logout'})}); } catch {}
+  showAdminLogin('You have been signed out.');
 });
 document.getElementById('close-admin').addEventListener('click', closeAdmin);
 document.getElementById('cancel-edit').addEventListener('click', () => {
