@@ -299,30 +299,88 @@ document.getElementById('logout-admin').addEventListener('click', async () => {
   showAdminLogin('You have been signed out.');
 });
 document.getElementById('close-admin').addEventListener('click', closeAdmin);
+const carPhotoFile = document.getElementById('car-photo-file');
+const carPhotoPreview = document.getElementById('car-photo-preview');
+let carPhotoPreviewUrl = '';
+carPhotoFile.addEventListener('change', () => {
+  if (carPhotoPreviewUrl) URL.revokeObjectURL(carPhotoPreviewUrl);
+  const file = carPhotoFile.files[0];
+  carPhotoPreview.hidden = !file;
+  if (file) {
+    carPhotoPreviewUrl = URL.createObjectURL(file);
+    carPhotoPreview.src = carPhotoPreviewUrl;
+  } else {
+    carPhotoPreview.removeAttribute('src');
+    carPhotoPreviewUrl = '';
+  }
+});
+async function compressCarPhoto(file) {
+  if (!file.type.startsWith('image/')) throw new Error('Choose an image file.');
+  if (file.size > 20 * 1024 * 1024) throw new Error('Choose an image under 20 MB.');
+  const bitmap = await createImageBitmap(file);
+  try {
+    const scale = Math.min(1, 1400 / bitmap.width, 1000 / bitmap.height);
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.max(1, Math.round(bitmap.width * scale));
+    canvas.height = Math.max(1, Math.round(bitmap.height * scale));
+    canvas.getContext('2d').drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.8));
+    if (!blob) throw new Error('Could not resize this image.');
+    return await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result));
+      reader.onerror = () => reject(new Error('Could not read this image.'));
+      reader.readAsDataURL(blob);
+    });
+  } finally {
+    bitmap.close();
+  }
+}
+function clearCarPhotoPreview() {
+  if (carPhotoPreviewUrl) URL.revokeObjectURL(carPhotoPreviewUrl);
+  carPhotoPreviewUrl = '';
+  carPhotoPreview.hidden = true;
+  carPhotoPreview.removeAttribute('src');
+}
 document.getElementById('cancel-edit').addEventListener('click', () => {
   vehicleForm.reset(); vehicleForm.elements.id.value = '';
+  clearCarPhotoPreview();
   document.getElementById('form-title').textContent = 'Add a car';
   document.getElementById('cancel-edit').hidden = true;
 });
 adminOverlay.addEventListener('click', event => { if (event.target === adminOverlay) closeAdmin(); });
 document.addEventListener('keydown', event => { if (event.key === 'Escape' && !adminOverlay.hidden) closeAdmin(); });
 
-vehicleForm.addEventListener('submit', event => {
+vehicleForm.addEventListener('submit', async event => {
   event.preventDefault();
   const formData = new FormData(vehicleForm);
+  const submit = vehicleForm.querySelector('button[type="submit"]');
+  submit.disabled = true;
+  adminFeedback.textContent = 'Saving listing…';
+  try {
+  const upload = formData.get('photoFile');
+  const uploadedPhoto = upload instanceof File && upload.size ? await compressCarPhoto(upload) : '';
   const id = formData.get('id') || `${String(formData.get('make')).toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${crypto.randomUUID().slice(0, 8)}`;
   const previous = vehicles.find(car => car.id === id);
-  const record = {id,make:String(formData.get('make')).trim(),model:String(formData.get('model')).trim(),trim:String(formData.get('trim')).trim(),year:Number(formData.get('year')),price:Number(formData.get('price')),transmission:formData.get('transmission'),fuel:formData.get('fuel'),mileage:String(formData.get('mileage')).trim() || 'Ask for mileage',location:String(formData.get('location')).trim() || 'Kigali',status:formData.get('status'),category:previous?.category || 'Car',featured:previous?.featured || false,image:previous?.image || 'photo-1503376780353-7e6692767b70',...(String(formData.get('photo')).trim() ? {photo:String(formData.get('photo')).trim()} : {})};
+  const photoUrl = String(formData.get('photo')).trim();
+  const record = {id,make:String(formData.get('make')).trim(),model:String(formData.get('model')).trim(),trim:String(formData.get('trim')).trim(),year:Number(formData.get('year')),price:Number(formData.get('price')),transmission:formData.get('transmission'),fuel:formData.get('fuel'),mileage:String(formData.get('mileage')).trim() || 'Ask for mileage',location:String(formData.get('location')).trim() || 'Kigali',status:formData.get('status'),category:previous?.category || 'Car',featured:previous?.featured || false,image:previous?.image || 'photo-1503376780353-7e6692767b70',...(uploadedPhoto ? {photo:uploadedPhoto} : photoUrl ? {photo:photoUrl} : previous?.photo ? {photo:previous.photo} : {})};
+  const oldVehicles = vehicles;
   if (previous) vehicles = vehicles.map(car => car.id === id ? record : car); else vehicles = [record,...vehicles];
-  saveInventory();
+  try { saveInventory(); } catch (error) { vehicles = oldVehicles; throw error; }
   const option = [...makeFilter.options].find(item => item.value.toLowerCase() === record.make.toLowerCase());
   if (!option) { const makeOption = new Option(record.make,record.make); makeFilter.add(makeOption); }
   vehicleForm.reset(); vehicleForm.elements.id.value = '';
+  clearCarPhotoPreview();
   document.getElementById('form-title').textContent = 'Add a car';
   document.getElementById('cancel-edit').hidden = true;
   adminFeedback.textContent = 'Listing saved on this device.';
   renderAdmin(); renderCars();
   window.setTimeout(() => { adminFeedback.textContent = ''; }, 3000);
+  } catch (error) {
+    adminFeedback.textContent = error?.message || 'Could not save this listing. Try a smaller photo.';
+  } finally {
+    submit.disabled = false;
+  }
 });
 
 adminRows.addEventListener('click', event => {
@@ -332,7 +390,12 @@ adminRows.addEventListener('click', event => {
   if (editButton) {
     const car = vehicles.find(item => item.id === editButton.dataset.edit);
     if (!car) return;
-    for (const field of vehicleForm.elements) if (field.name && Object.hasOwn(car, field.name)) field.value = car[field.name];
+    for (const field of vehicleForm.elements) {
+      if (!field.name || !Object.hasOwn(car, field.name)) continue;
+      field.value = field.name === 'photo' && String(car.photo).startsWith('data:image/') ? '' : car[field.name];
+    }
+    clearCarPhotoPreview();
+    if (car.photo) { carPhotoPreview.src = car.photo; carPhotoPreview.hidden = false; }
     vehicleForm.elements.id.value = car.id;
     document.getElementById('form-title').textContent = `Edit ${car.year} ${car.make} ${car.model}`;
     document.getElementById('cancel-edit').hidden = false;
