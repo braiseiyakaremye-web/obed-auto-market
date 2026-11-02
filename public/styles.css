@@ -64,3 +64,6 @@
 .ev-banner-link{display:inline-flex;align-items:center;gap:22px;padding:13px 17px;border:1px solid rgba(255,255,255,.75);border-radius:4px;background:rgba(7,26,48,.86);color:white;font-size:11px;font-weight:700;}
 .ev-banner-link span{color:#8bb2ff;font-size:16px}
 @media(max-width:650px){.brand{width:150px;height:56px}.footer-brand{width:105px;height:45px}.ev-banner{min-height:190px;padding:16px 5%;background-position:center 45%}.ev-banner-link{padding:11px 13px;font-size:10px}}
+/* Give the EV artwork a wide 16:9 presentation with much less cropping. */
+.ev-banner{width:100%;aspect-ratio:16/9;min-height:0;max-height:none;background-position:center;background-size:cover}
+@media(max-width:650px){.ev-banner{aspect-ratio:16/9;min-height:0;padding:12px 5%;background-position:center}}
