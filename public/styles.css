@@ -79,3 +79,5 @@
 @media(max-width:950px){.car-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;padding:16px}.car-image-wrap{height:160px}}
 @media(max-width:650px){.car-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:10px}.car-image-wrap{height:125px}.car-info{padding:10px 9px}}
 @media(max-width:430px){.car-grid{grid-template-columns:minmax(0,1fr);gap:12px;padding:10px}.car-image-wrap{height:clamp(160px,52vw,210px)}}
+.email-button{width:auto;max-width:100%;margin-left:10px;gap:12px}
+@media(max-width:650px){.email-button{margin:12px 0 0;max-width:100%;font-size:9px}}
