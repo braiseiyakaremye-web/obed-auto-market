@@ -72,3 +72,10 @@
 .results-actions{display:flex;align-items:center;gap:20px}
 .results-actions .ev-banner-link{background:var(--navy);font-size:9px;padding:10px 13px;gap:12px}
 @media(max-width:650px){.car-grid{padding:9px;gap:11px;background-size:100% auto;background-position:center top}.results-actions{gap:9px;flex-wrap:wrap;justify-content:flex-end}.results-actions .ev-banner-link{font-size:8px;padding:8px 9px;gap:6px}}
+/* Compact listing cards so more of the EV artwork remains visible around them. */
+.car-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:22px;padding:24px}
+.car-image-wrap{height:clamp(145px,14vw,190px)}
+.car-info{padding:13px 14px 12px}
+@media(max-width:950px){.car-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;padding:16px}.car-image-wrap{height:160px}}
+@media(max-width:650px){.car-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:10px}.car-image-wrap{height:125px}.car-info{padding:10px 9px}}
+@media(max-width:430px){.car-grid{grid-template-columns:minmax(0,1fr);gap:12px;padding:10px}.car-image-wrap{height:clamp(160px,52vw,210px)}}
