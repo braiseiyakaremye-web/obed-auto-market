@@ -237,7 +237,7 @@ async function checkAdminSession() {
     if (!response.ok) return {ok:false, message:'Admin login service is not available. Please try again later.'};
     return await response.json();
   } catch {
-    return {ok:false, message:'Could not reach the admin login service. Check your connection and try again.'};
+    return {ok:false, message:'Could not reach the admin service. Open obed-auto-market.netlify.app and try again.'};
   }
 }
 
@@ -261,6 +261,10 @@ document.getElementById('toggle-admin-password').addEventListener('click', event
 });
 adminLogin.addEventListener('submit', async event => {
   event.preventDefault();
+  if (!location.hostname.endsWith('.netlify.app')) {
+    adminLoginFeedback.textContent = 'Admin sign in works on the Netlify site: obed-auto-market.netlify.app';
+    return;
+  }
   const submit = adminLogin.querySelector('button[type="submit"]');
   const form = new FormData(adminLogin);
   submit.disabled = true;
@@ -278,7 +282,7 @@ adminLogin.addEventListener('submit', async event => {
     adminLogin.reset();
     showAdminDashboard();
   } catch {
-    adminLoginFeedback.textContent = 'Could not reach the admin login service. Check your connection and try again.';
+    adminLoginFeedback.textContent = 'Could not reach the admin service. Open obed-auto-market.netlify.app and try again.';
   } finally {
     submit.disabled = false;
   }

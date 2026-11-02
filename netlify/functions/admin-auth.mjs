@@ -21,6 +21,11 @@ function safeEqual(left, right) {
   return a.length === b.length && timingSafeEqual(a, b);
 }
 
+function normalizedPhone(value) {
+  const digits = String(value || '').replace(/\D/g, '');
+  return /^0\d{9}$/.test(digits) ? `250${digits.slice(1)}` : digits;
+}
+
 function cookieValue(request) {
   const cookieHeader = request.headers.get('cookie') || '';
   const entry = cookieHeader.split(';').map(part => part.trim()).find(part => part.startsWith(`${cookieName}=`));
@@ -83,9 +88,9 @@ export default async function handler(request) {
     return response({ message: 'Too many attempts. Please wait 15 minutes and try again.' }, 429);
   }
 
-  const phone = String(body.phone || '').replace(/\D/g, '');
+  const phone = normalizedPhone(body.phone);
   const password = String(body.password || '');
-  const expectedPhone = String(process.env.ADMIN_PHONE).replace(/\D/g, '');
+  const expectedPhone = normalizedPhone(process.env.ADMIN_PHONE);
   const salt = Buffer.from(process.env.ADMIN_PASSWORD_SALT, 'hex');
   if (salt.length < 16) return response({ message: 'Admin login is not configured.' }, 503);
   const candidateHash = await scryptAsync(password, salt, 32);
