@@ -2,3 +2,6 @@
   publish = "public"
   functions = "netlify/functions"
 
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = "ADMIN_PHONE"
+
