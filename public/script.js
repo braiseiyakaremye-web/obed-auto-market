@@ -54,7 +54,8 @@ function renderCars() {
   const matches = vehicles.filter(car => {
     const searchable = `${car.make} ${car.model} ${car.trim} ${car.year} ${car.category} ${car.fuel} ${car.transmission}`.toLowerCase();
     const withinPrice = maxPrice === Infinity ? true : Number(car.price) > 0 && car.price <= maxPrice;
-    return car.status !== 'Sold' && (!query || searchable.includes(query)) && (!makeFilter.value || car.make === makeFilter.value) && (!transmissionFilter.value || car.transmission === transmissionFilter.value) && withinPrice && (!onlySaved || liked.has(car.id));
+    const matchesDrive = !transmissionFilter.value || (transmissionFilter.value === 'Electric' ? car.fuel === 'Electric' : car.transmission === transmissionFilter.value);
+    return car.status !== 'Sold' && (!query || searchable.includes(query)) && (!makeFilter.value || car.make === makeFilter.value) && matchesDrive && withinPrice && (!onlySaved || liked.has(car.id));
   });
 
   grid.innerHTML = matches.map(car => `
